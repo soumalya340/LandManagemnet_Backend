@@ -6,7 +6,8 @@ require("dotenv").config();
 // Contract configuration
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const RPC_URL = process.env.RPC_URL;
+const RPC_URL =
+  process.env.RPC_URL || "https://base-sepolia-rpc.publicnode.com";
 
 // Function to initialize our blockchain connection
 // Think of this as "plugging into" the Ethereum network

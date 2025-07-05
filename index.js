@@ -4,7 +4,7 @@ const { ethers } = require("ethers");
 require("dotenv").config();
 const { initializeContract, contract } = require("./utils/contractInstance");
 const getterRoutes = require("./routes/getter.routes");
-const setterRoutes = require("./routes/setter.route");
+const setterRoutes = require("./routes/setter.routes");
 const getPlotRoutes = require("./routes/get_plot.routes");
 const { swaggerUi, specs } = require("./config/swagger");
 

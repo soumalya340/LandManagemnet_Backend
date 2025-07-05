@@ -849,6 +849,262 @@ router.post("/request-plot-transfer", async (req, res) => {
 
 /**
  * @swagger
+ * /api/setter/request-parcel-transfer:
+ *   post:
+ *     summary: Request Parcel Transfer
+ *     description: Creates a request to transfer a parcel (or parcels) from one address to another, optionally as a plot transfer.
+ *     tags: [Transfer]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - _parcelId
+ *               - parcelAmount
+ *               - to
+ *               - _plotId
+ *               - isPlotTransfer
+ *             properties:
+ *               _parcelId:
+ *                 type: integer
+ *                 description: The ID of the parcel to transfer
+ *                 example: 101
+ *               parcelAmount:
+ *                 type: integer
+ *                 description: The amount of the parcel to transfer
+ *                 example: 1000
+ *               to:
+ *                 type: string
+ *                 pattern: "^0x[a-fA-F0-9]{40}$"
+ *                 example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                 description: The recipient address for the parcel transfer
+ *               _plotId:
+ *                 type: integer
+ *                 description: The plot ID associated with the parcel
+ *                 example: 1
+ *               isPlotTransfer:
+ *                 type: boolean
+ *                 description: Whether this is a plot transfer (true) or just a parcel transfer (false)
+ *                 example: false
+ *           example:
+ *             _parcelId: 101
+ *             parcelAmount: 1000
+ *             to: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
+ *             _plotId: 1
+ *             isPlotTransfer: false
+ *     responses:
+ *       200:
+ *         description: Parcel transfer request created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     requestId:
+ *                       type: string
+ *                       example: "1"
+ *                     _parcelId:
+ *                       type: integer
+ *                       example: 101
+ *                     parcelAmount:
+ *                       type: integer
+ *                       example: 1000
+ *                     to:
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                     _plotId:
+ *                       type: integer
+ *                       example: 1
+ *                     isPlotTransfer:
+ *                       type: boolean
+ *                       example: false
+ *                     transaction:
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
+ *                     confirmedAt:
+ *                       type: string
+ *                       format: date-time
+ *                 message:
+ *                   type: string
+ *                   example: "Parcel transfer request created successfully"
+ *       400:
+ *         description: Bad request - invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/request-parcel-transfer"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/request-parcel-transfer"
+ */
+router.post("/request-parcel-transfer", async (req, res) => {
+  try {
+    let contract;
+    try {
+      contract = getContract();
+    } catch (error) {
+      await initializeContract();
+      contract = getContract();
+    }
+
+    const { _parcelId, parcelAmount, to, _plotId, isPlotTransfer } = req.body;
+
+    // Input validation
+    if (
+      typeof _parcelId !== "number" ||
+      typeof parcelAmount !== "number" ||
+      typeof _plotId !== "number" ||
+      typeof isPlotTransfer !== "boolean" ||
+      !to
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: "All fields are required and must be of correct type",
+          details:
+            "Please provide _parcelId (number), parcelAmount (number), to (address), _plotId (number), isPlotTransfer (boolean)",
+          timestamp: new Date().toISOString(),
+          endpoint: "/api/setter/request-parcel-transfer",
+        },
+      });
+    }
+
+    if (!/^0x[a-fA-F0-9]{40}$/.test(to)) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: "Invalid recipient address format",
+          timestamp: new Date().toISOString(),
+          endpoint: "/api/setter/request-parcel-transfer",
+        },
+      });
+    }
+
+    const tx = await contract.requestForParcelTransfer(
+      _parcelId,
+      parcelAmount,
+      to,
+      _plotId,
+      isPlotTransfer
+    );
+    const receipt = await tx.wait();
+
+    // Parse events to get request ID
+    let requestId = null;
+    for (const log of receipt.logs) {
+      try {
+        const parsed = contract.interface.parseLog(log);
+        if (parsed.name === "TransferRequestCreated") {
+          requestId = parsed.args.requestId.toString();
+          break;
+        }
+      } catch (e) {
+        // Skip unparseable logs
+      }
+    }
+
+    res.json({
+      success: true,
+      data: {
+        requestId,
+        _parcelId,
+        parcelAmount,
+        to,
+        _plotId,
+        isPlotTransfer,
+        transaction: {
+          hash: tx.hash,
+          gasUsed: receipt.gasUsed?.toString(),
+          status: receipt.status,
+        },
+        confirmedAt: new Date().toISOString(),
+      },
+      message: "Parcel transfer request created successfully",
+    });
+  } catch (error) {
+    console.error(
+      "Error in /api/setter/request-parcel-transfer:",
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      error: {
+        message: "Failed to request parcel transfer",
+        details: error.message,
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/setter/request-parcel-transfer",
+      },
+    });
+  }
+});
+
+/**
+ * @swagger
  * /api/setter/approve-transfer:
  *   post:
  *     summary: Delegate Approve Transfer

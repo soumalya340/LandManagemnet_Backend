@@ -5,9 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
-    "generate-docs": "node scripts/generate-docs.js",
-    "docs": "node generate-static-docs.js"
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
