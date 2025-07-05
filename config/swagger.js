@@ -7,22 +7,7 @@ const options = {
     info: {
       title: "Land Management API",
       version: "1.0.0",
-      description: `
-        🏞️ **Land Management API**
-        
-        A comprehensive blockchain-based API for managing land tokenization, plot transfers, and smart contract operations.
-        
-        ## Features:
-        - 🔍 **Getter Routes**: View blockchain data (treasury, lands, plots)
-        - ⚡ **Setter Routes**: Execute blockchain transactions  
-        - 📊 **Plot Routes**: Advanced plot management operations
-        
-        ## Authentication:
-        Currently open API - no authentication required.
-        
-        ## Base URL:
-        \`http://localhost:8000\`
-      `,
+      description: `A comprehensive blockchain-based API for managing land tokenization, plot transfers, and smart contract operations.`,
       contact: {
         name: "Land Management API Support",
         email: "support@landmanagement.com",
@@ -69,32 +54,46 @@ const options = {
       },
     ],
     components: {
-      schemas: {
-        // Success Response Schema
-        ApiResponse: {
-          type: "object",
-          properties: {
-            success: {
-              type: "boolean",
-              example: true,
-            },
-            message: {
-              type: "string",
-              example: "Operation completed successfully",
-            },
-            data: {
-              type: "object",
-              description: "Response data (varies by endpoint)",
-            },
-            timestamp: {
-              type: "string",
-              format: "date-time",
-              example: "2024-01-15T10:30:00.000Z",
-            },
+      parameters: {
+        PlotId: {
+          name: "plotId",
+          in: "path",
+          required: true,
+          description: "The ID of the plot",
+          schema: {
+            type: "integer",
+            minimum: 1,
+            example: 1,
           },
         },
-
-        // Error Response Schema
+        EthereumAddressParam: {
+          name: "userAddress",
+          in: "path",
+          required: true,
+          description: "The Ethereum address of the user",
+          schema: {
+            $ref: "#/components/schemas/EthereumAddress",
+          },
+        },
+        TokenId: {
+          name: "tokenId",
+          in: "path",
+          required: true,
+          description: "The ID of the token",
+          schema: {
+            type: "integer",
+            minimum: 1,
+            example: 1,
+          },
+        },
+      },
+      schemas: {
+        EthereumAddress: {
+          type: "string",
+          pattern: "^0x[a-fA-F0-9]{40}$",
+          example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0",
+          description: "A valid Ethereum address",
+        },
         ErrorResponse: {
           type: "object",
           properties: {
@@ -123,136 +122,10 @@ const options = {
                 },
                 endpoint: {
                   type: "string",
-                  example: "/api/getter/get-treasury",
+                  example: "/api/endpoint",
                 },
               },
             },
-          },
-        },
-
-        // Transaction Schema
-        Transaction: {
-          type: "object",
-          properties: {
-            hash: {
-              type: "string",
-              example: "0x1234567890abcdef1234567890abcdef12345678",
-            },
-            from: {
-              type: "string",
-              example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0",
-            },
-            to: {
-              type: "string",
-              example: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298",
-            },
-            gasUsed: {
-              type: "string",
-              example: "21000",
-            },
-            status: {
-              type: "number",
-              example: 1,
-            },
-          },
-        },
-
-        // Ethereum Address Schema
-        EthereumAddress: {
-          type: "string",
-          pattern: "^0x[a-fA-F0-9]{40}$",
-          example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0",
-          description: "Valid Ethereum address (42 characters, starts with 0x)",
-        },
-
-        // Land Info Schema
-        LandInfo: {
-          type: "object",
-          properties: {
-            tokenId: {
-              type: "string",
-              example: "1",
-            },
-            blockInfo: {
-              type: "string",
-              example: "Block A1",
-            },
-            parcelInfo: {
-              type: "string",
-              example: "Parcel P1",
-            },
-            blockParcelTokenURI: {
-              type: "string",
-              example: "https://example.com/token/1",
-            },
-            totalSupply: {
-              type: "string",
-              example: "1000",
-            },
-          },
-        },
-
-        // Plot Info Schema
-        PlotInfo: {
-          type: "object",
-          properties: {
-            plotId: {
-              type: "string",
-              example: "1",
-            },
-            plotAccount: {
-              type: "string",
-              example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0",
-            },
-            parcelIds: {
-              type: "array",
-              items: {
-                type: "string",
-              },
-              example: ["101", "102", "103"],
-            },
-            parcelAmounts: {
-              type: "array",
-              items: {
-                type: "string",
-              },
-              example: ["1000", "800", "1200"],
-            },
-          },
-        },
-      },
-
-      // Common Parameters
-      parameters: {
-        TokenId: {
-          name: "tokenId",
-          in: "path",
-          required: true,
-          description: "The ID of the land token",
-          schema: {
-            type: "integer",
-            minimum: 1,
-            example: 1,
-          },
-        },
-        PlotId: {
-          name: "plotId",
-          in: "path",
-          required: true,
-          description: "The ID of the plot",
-          schema: {
-            type: "integer",
-            minimum: 1,
-            example: 1,
-          },
-        },
-        EthereumAddressParam: {
-          name: "userAddress",
-          in: "path",
-          required: true,
-          description: "Ethereum wallet address",
-          schema: {
-            $ref: "#/components/schemas/EthereumAddress",
           },
         },
       },

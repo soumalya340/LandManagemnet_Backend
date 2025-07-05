@@ -4,10 +4,9 @@ const fs = require("fs");
 require("dotenv").config();
 
 // Contract configuration
-const CONTRACT_ADDRESS =
-  process.env.CONTRACT_ADDRESS || "0xf1c566EF3C15b978c658F942beB9cffF335a318a";
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const RPC_URL = process.env.RPC_URL || "https://rpc.ankr.com/eth_sepolia";
+const RPC_URL = process.env.RPC_URL;
 
 // Function to initialize our blockchain connection
 // Think of this as "plugging into" the Ethereum network

@@ -22,7 +22,9 @@ const router = express.Router();
  *               - plotRegistryAddress
  *             properties:
  *               plotRegistryAddress:
- *                 $ref: '#/components/schemas/EthereumAddress'
+ *                 type: string
+ *                 pattern: "^0x[a-fA-F0-9]{40}$"
+ *                 example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                 description: The address of the plot registry contract
  *           example:
  *             plotRegistryAddress: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
@@ -41,9 +43,27 @@ const router = express.Router();
  *                   type: object
  *                   properties:
  *                     transaction:
- *                       $ref: '#/components/schemas/Transaction'
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         from:
+ *                           type: string
+ *                           example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                         to:
+ *                           type: string
+ *                           example: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
  *                     plotRegistryAddress:
- *                       $ref: '#/components/schemas/EthereumAddress'
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                     confirmedAt:
  *                       type: string
  *                       format: date-time
@@ -55,13 +75,57 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  */
 router.post("/set-plot-registry", async (req, res) => {
   try {
@@ -169,7 +233,9 @@ router.post("/set-plot-registry", async (req, res) => {
  *               - ownershipAddress
  *             properties:
  *               ownershipAddress:
- *                 $ref: '#/components/schemas/EthereumAddress'
+ *                 type: string
+ *                 pattern: "^0x[a-fA-F0-9]{40}$"
+ *                 example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                 description: The address of the plot ownership contract
  *           example:
  *             ownershipAddress: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
@@ -188,9 +254,27 @@ router.post("/set-plot-registry", async (req, res) => {
  *                   type: object
  *                   properties:
  *                     transaction:
- *                       $ref: '#/components/schemas/Transaction'
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         from:
+ *                           type: string
+ *                           example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                         to:
+ *                           type: string
+ *                           example: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
  *                     ownershipAddress:
- *                       $ref: '#/components/schemas/EthereumAddress'
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                     confirmedAt:
  *                       type: string
  *                       format: date-time
@@ -202,13 +286,57 @@ router.post("/set-plot-registry", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  */
 router.post("/set-plot-ownership", async (req, res) => {
   try {
@@ -345,7 +473,23 @@ router.post("/set-plot-ownership", async (req, res) => {
  *                       type: string
  *                       example: "1000"
  *                     transaction:
- *                       $ref: '#/components/schemas/Transaction'
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         from:
+ *                           type: string
+ *                           example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                         to:
+ *                           type: string
+ *                           example: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
  *                     confirmedAt:
  *                       type: string
  *                       format: date-time
@@ -357,13 +501,57 @@ router.post("/set-plot-ownership", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  */
 router.post("/create-token", async (req, res) => {
   try {
@@ -466,7 +654,9 @@ router.post("/create-token", async (req, res) => {
  *                 description: The ID of the plot to transfer
  *                 example: "1"
  *               to:
- *                 $ref: '#/components/schemas/EthereumAddress'
+ *                 type: string
+ *                 pattern: "^0x[a-fA-F0-9]{40}$"
+ *                 example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                 description: The recipient address for the plot transfer
  *           example:
  *             plotId: "1"
@@ -492,9 +682,27 @@ router.post("/create-token", async (req, res) => {
  *                       type: string
  *                       example: "1"
  *                     to:
- *                       $ref: '#/components/schemas/EthereumAddress'
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                     transaction:
- *                       $ref: '#/components/schemas/Transaction'
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         from:
+ *                           type: string
+ *                           example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                         to:
+ *                           type: string
+ *                           example: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
  *                     confirmedAt:
  *                       type: string
  *                       format: date-time
@@ -506,13 +714,57 @@ router.post("/create-token", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  */
 router.post("/request-plot-transfer", async (req, res) => {
   try {
@@ -616,7 +868,9 @@ router.post("/request-plot-transfer", async (req, res) => {
  *               - role
  *             properties:
  *               signerWallet:
- *                 $ref: '#/components/schemas/EthereumAddress'
+ *                 type: string
+ *                 pattern: "^0x[a-fA-F0-9]{40}$"
+ *                 example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                 description: The wallet address of the approving authority
  *               requestId:
  *                 type: string
@@ -653,7 +907,9 @@ router.post("/request-plot-transfer", async (req, res) => {
  *                       type: string
  *                       example: "1"
  *                     signerWallet:
- *                       $ref: '#/components/schemas/EthereumAddress'
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                     role:
  *                       type: integer
  *                       example: 1
@@ -661,7 +917,23 @@ router.post("/request-plot-transfer", async (req, res) => {
  *                       type: string
  *                       example: "Land Authority"
  *                     transaction:
- *                       $ref: '#/components/schemas/Transaction'
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         from:
+ *                           type: string
+ *                           example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                         to:
+ *                           type: string
+ *                           example: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
  *                     confirmedAt:
  *                       type: string
  *                       format: date-time
@@ -673,13 +945,57 @@ router.post("/request-plot-transfer", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  *       500:
  *         description: Internal server error
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/endpoint"
  */
 router.post("/approve-transfer", async (req, res) => {
   try {
@@ -768,7 +1084,282 @@ router.post("/approve-transfer", async (req, res) => {
   }
 });
 
-// POST: Finalize Plot Transfer
+/**
+ * @swagger
+ * /api/setter/finalize-parcel-transfer:
+ *   post:
+ *     summary: Finalize Parcel Transfer
+ *     description: Finalizes a parcel transfer by its request ID.
+ *     tags: [Transfer]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - requestId
+ *             properties:
+ *               requestId:
+ *                 type: integer
+ *                 example: 1
+ *                 description: The ID of the parcel transfer request to finalize
+ *           example:
+ *             requestId: 1
+ *     responses:
+ *       200:
+ *         description: Parcel transfer finalized successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     transaction:
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
+ *                     requestId:
+ *                       type: string
+ *                       example: "1"
+ *                 message:
+ *                   type: string
+ *                   example: "Parcel transfer finalized successfully"
+ *       400:
+ *         description: Bad request - invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/finalize-parcel-transfer"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/finalize-parcel-transfer"
+ */
+router.post("/finalize-parcel-transfer", async (req, res) => {
+  try {
+    let contract;
+    try {
+      contract = getContract();
+    } catch (error) {
+      await initializeContract();
+      contract = getContract();
+    }
+    const { requestId } = req.body;
+    if (!requestId || typeof requestId !== "number") {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: "requestId is required and must be a number",
+          details: "requestId is required in the request body as a number.",
+          code: "INVALID_INPUT",
+          timestamp: new Date().toISOString(),
+          endpoint: "/api/setter/finalize-parcel-transfer",
+        },
+      });
+    }
+    const tx = await contract.finalizeParcelTransfer(requestId);
+    const receipt = await tx.wait();
+    res.json({
+      success: true,
+      data: {
+        transaction: {
+          hash: tx.hash,
+          gasUsed: receipt.gasUsed?.toString(),
+          status: receipt.status,
+        },
+        requestId: requestId.toString(),
+      },
+      message: "Parcel transfer finalized successfully",
+    });
+  } catch (error) {
+    console.error(
+      "Error in /api/setter/finalize-parcel-transfer:",
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      error: {
+        message: "Failed to finalize parcel transfer",
+        details: error.message,
+        code: error.code,
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/setter/finalize-parcel-transfer",
+      },
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /api/setter/finalize-plot-transfer:
+ *   post:
+ *     summary: Finalize Plot Transfer
+ *     description: Finalizes a plot transfer by its request ID.
+ *     tags: [Transfer]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - requestId
+ *             properties:
+ *               requestId:
+ *                 type: integer
+ *                 example: 1
+ *                 description: The ID of the plot transfer request to finalize
+ *           example:
+ *             requestId: 1
+ *     responses:
+ *       200:
+ *         description: Plot transfer finalized successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     transaction:
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
+ *                     requestId:
+ *                       type: string
+ *                       example: "1"
+ *                 message:
+ *                   type: string
+ *                   example: "Plot transfer finalized successfully"
+ *       400:
+ *         description: Bad request - invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/finalize-plot-transfer"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/finalize-plot-transfer"
+ */
 router.post("/finalize-plot-transfer", async (req, res) => {
   try {
     let contract;
@@ -778,34 +1369,30 @@ router.post("/finalize-plot-transfer", async (req, res) => {
       await initializeContract();
       contract = getContract();
     }
-
     const { requestId } = req.body;
-
-    if (!requestId) {
+    if (!requestId || typeof requestId !== "number") {
       return res.status(400).json({
         success: false,
         error: {
-          message: "Request ID is required",
-          details: "Please provide 'requestId' in request body",
+          message: "requestId is required and must be a number",
+          details: "requestId is required in the request body as a number.",
+          code: "INVALID_INPUT",
           timestamp: new Date().toISOString(),
           endpoint: "/api/setter/finalize-plot-transfer",
         },
       });
     }
-
     const tx = await contract.finalizePlotTransfer(requestId);
     const receipt = await tx.wait();
-
     res.json({
       success: true,
       data: {
-        requestId,
         transaction: {
           hash: tx.hash,
           gasUsed: receipt.gasUsed?.toString(),
           status: receipt.status,
         },
-        confirmedAt: new Date().toISOString(),
+        requestId: requestId.toString(),
       },
       message: "Plot transfer finalized successfully",
     });
@@ -819,8 +1406,362 @@ router.post("/finalize-plot-transfer", async (req, res) => {
       error: {
         message: "Failed to finalize plot transfer",
         details: error.message,
+        code: error.code,
         timestamp: new Date().toISOString(),
         endpoint: "/api/setter/finalize-plot-transfer",
+      },
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /api/setter/plot-initiate:
+ *   post:
+ *     summary: Initiate a new Plot
+ *     description: Initiates a new plot with the given parcel IDs and parcel amounts.
+ *     tags: [Plot]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - parcelIds
+ *               - parcelAmounts
+ *             properties:
+ *               parcelIds:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *                 example: [101, 102, 103]
+ *                 description: Array of parcel IDs
+ *               parcelAmounts:
+ *                 type: array
+ *                 items:
+ *                   type: integer
+ *                 example: [1000, 800, 1200]
+ *                 description: Array of parcel amounts (must match parcelIds length)
+ *           example:
+ *             parcelIds: [101, 102, 103]
+ *             parcelAmounts: [1000, 800, 1200]
+ *     responses:
+ *       200:
+ *         description: Plot initiated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     transaction:
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
+ *                     plotId:
+ *                       type: string
+ *                       example: "1"
+ *                 message:
+ *                   type: string
+ *                   example: "Plot initiated successfully"
+ *       400:
+ *         description: Bad request - invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/plot-initiate"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/plot-initiate"
+ */
+router.post("/plot-initiate", async (req, res) => {
+  try {
+    let contract;
+    try {
+      contract = getContract();
+    } catch (error) {
+      await initializeContract();
+      contract = getContract();
+    }
+    const { parcelIds, parcelAmounts } = req.body;
+    if (
+      !Array.isArray(parcelIds) ||
+      !Array.isArray(parcelAmounts) ||
+      parcelIds.length !== parcelAmounts.length ||
+      parcelIds.length === 0
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message:
+            "parcelIds and parcelAmounts must be non-empty arrays of equal length",
+          details: "Both arrays are required and must have the same length.",
+          code: "INVALID_INPUT",
+          timestamp: new Date().toISOString(),
+          endpoint: "/api/setter/plot-initiate",
+        },
+      });
+    }
+    const tx = await contract.plotInitiate(parcelIds, parcelAmounts);
+    const receipt = await tx.wait();
+    // Try to extract plotId from events if available
+    let plotId = null;
+    if (receipt && receipt.logs) {
+      for (const log of receipt.logs) {
+        try {
+          const parsed = contract.interface.parseLog(log);
+          if (parsed.name && parsed.args && parsed.args.plotId) {
+            plotId = parsed.args.plotId.toString();
+            break;
+          }
+        } catch (e) {}
+      }
+    }
+    res.json({
+      success: true,
+      data: {
+        transaction: {
+          hash: tx.hash,
+          gasUsed: receipt.gasUsed?.toString(),
+          status: receipt.status,
+        },
+        plotId,
+      },
+      message: "Plot initiated successfully",
+    });
+  } catch (error) {
+    console.error("Error in /api/setter/plot-initiate:", error.message);
+    res.status(500).json({
+      success: false,
+      error: {
+        message: "Failed to initiate plot",
+        details: error.message,
+        code: error.code,
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/setter/plot-initiate",
+      },
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /api/setter/plot-finalize:
+ *   post:
+ *     summary: Finalize a Plot
+ *     description: Finalizes a plot by its plot ID.
+ *     tags: [Plot]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - plotId
+ *             properties:
+ *               plotId:
+ *                 type: integer
+ *                 example: 1
+ *                 description: The ID of the plot to finalize
+ *           example:
+ *             plotId: 1
+ *     responses:
+ *       200:
+ *         description: Plot finalized successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     transaction:
+ *                       type: object
+ *                       properties:
+ *                         hash:
+ *                           type: string
+ *                           example: "0x1234567890abcdef1234567890abcdef12345678"
+ *                         gasUsed:
+ *                           type: string
+ *                           example: "21000"
+ *                         status:
+ *                           type: number
+ *                           example: 1
+ *                     plotId:
+ *                       type: string
+ *                       example: "1"
+ *                 message:
+ *                   type: string
+ *                   example: "Plot finalized successfully"
+ *       400:
+ *         description: Bad request - invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/plot-finalize"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/setter/plot-finalize"
+ */
+router.post("/plot-finalize", async (req, res) => {
+  try {
+    let contract;
+    try {
+      contract = getContract();
+    } catch (error) {
+      await initializeContract();
+      contract = getContract();
+    }
+    const { plotId } = req.body;
+    if (!plotId || typeof plotId !== "number") {
+      return res.status(400).json({
+        success: false,
+        error: {
+          message: "plotId is required and must be a number",
+          details: "plotId is required in the request body as a number.",
+          code: "INVALID_INPUT",
+          timestamp: new Date().toISOString(),
+          endpoint: "/api/setter/plot-finalize",
+        },
+      });
+    }
+    const tx = await contract.plotFinalize(plotId);
+    const receipt = await tx.wait();
+    res.json({
+      success: true,
+      data: {
+        transaction: {
+          hash: tx.hash,
+          gasUsed: receipt.gasUsed?.toString(),
+          status: receipt.status,
+        },
+        plotId: plotId.toString(),
+      },
+      message: "Plot finalized successfully",
+    });
+  } catch (error) {
+    console.error("Error in /api/setter/plot-finalize:", error.message);
+    res.status(500).json({
+      success: false,
+      error: {
+        message: "Failed to finalize plot",
+        details: error.message,
+        code: error.code,
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/setter/plot-finalize",
       },
     });
   }

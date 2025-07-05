@@ -27,7 +27,9 @@ const router = express.Router();
  *                   type: object
  *                   properties:
  *                     treasuryWallet:
- *                       $ref: '#/components/schemas/EthereumAddress'
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                     fetchedAt:
  *                       type: string
  *                       format: date-time
@@ -43,7 +45,29 @@ const router = express.Router();
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/getter/endpoint"
  */
 router.get("/get-treasury", async (req, res) => {
   try {
@@ -94,7 +118,14 @@ router.get("/get-treasury", async (req, res) => {
  *     description: Retrieves detailed information about a specific land token by its ID
  *     tags: [Land]
  *     parameters:
- *       - $ref: '#/components/parameters/TokenId'
+ *       - name: tokenId
+ *         in: path
+ *         required: true
+ *         description: The ID of the land token
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *           example: 1
  *     responses:
  *       200:
  *         description: Land information retrieved successfully
@@ -107,7 +138,23 @@ router.get("/get-treasury", async (req, res) => {
  *                   type: boolean
  *                   example: true
  *                 data:
- *                   $ref: '#/components/schemas/LandInfo'
+ *                   type: object
+ *                   properties:
+ *                     tokenId:
+ *                       type: string
+ *                       example: "1"
+ *                     blockInfo:
+ *                       type: string
+ *                       example: "Block A1"
+ *                     parcelInfo:
+ *                       type: string
+ *                       example: "Parcel P1"
+ *                     blockParcelTokenURI:
+ *                       type: string
+ *                       example: "https://example.com/token/1"
+ *                     totalSupply:
+ *                       type: string
+ *                       example: "1000"
  *                 message:
  *                   type: string
  *                   example: "Land information retrieved successfully"
@@ -116,7 +163,29 @@ router.get("/get-treasury", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/getter/endpoint"
  */
 router.get("/land/:tokenId", async (req, res) => {
   try {
@@ -127,10 +196,8 @@ router.get("/land/:tokenId", async (req, res) => {
       await initializeContract();
       contract = getContract();
     }
-
     const { tokenId } = req.params;
     const landData = await contract.landInfo(tokenId);
-
     res.json({
       success: true,
       data: {
@@ -177,7 +244,24 @@ router.get("/land/:tokenId", async (req, res) => {
  *                   type: boolean
  *                   example: true
  *                 data:
- *                   $ref: '#/components/schemas/PlotInfo'
+ *                   type: object
+ *                   properties:
+ *                     plotId:
+ *                       type: string
+ *                       example: "1"
+ *                     plotAccount:
+ *                       type: string
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
+ *                     parcelIds:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example: ["101", "102", "103"]
+ *                     parcelAmounts:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example: ["1000", "800", "1200"]
  *                 message:
  *                   type: string
  *                   example: "Plot account information retrieved successfully"
@@ -186,7 +270,29 @@ router.get("/land/:tokenId", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/getter/endpoint"
  */
 router.get("/plot/:plotId/info", async (req, res) => {
   try {
@@ -264,7 +370,29 @@ router.get("/plot/:plotId/info", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/getter/endpoint"
  */
 router.get("/plots", async (req, res) => {
   try {
@@ -337,7 +465,29 @@ router.get("/plots", async (req, res) => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/getter/endpoint"
  */
 router.get("/token/:tokenId/uri", async (req, res) => {
   try {
@@ -411,9 +561,13 @@ router.get("/token/:tokenId/uri", async (req, res) => {
  *                       type: string
  *                       example: "1"
  *                     from:
- *                       $ref: '#/components/schemas/EthereumAddress'
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x742d35Cc6634C0532925a3b8D2DE0f87b7b82fd0"
  *                     to:
- *                       $ref: '#/components/schemas/EthereumAddress'
+ *                       type: string
+ *                       pattern: "^0x[a-fA-F0-9]{40}$"
+ *                       example: "0x1B8683e1885B3ee93524cD58BC10Cf3Ed6af4298"
  *                     parcelId:
  *                       type: string
  *                       example: "101"
@@ -453,7 +607,29 @@ router.get("/token/:tokenId/uri", async (req, res) => {
  *           application/json:
  *             schema:
  *               allOf:
- *                 - $ref: '#/components/schemas/ErrorResponse'
+ *                 - type: object
+ *                   properties:
+ *                     success:
+ *                       type: boolean
+ *                       example: false
+ *                     error:
+ *                       type: object
+ *                       properties:
+ *                         message:
+ *                           type: string
+ *                           example: "Operation failed"
+ *                         details:
+ *                           type: string
+ *                           example: "Detailed error description"
+ *                         code:
+ *                           type: string
+ *                           example: "CALL_EXCEPTION"
+ *                         timestamp:
+ *                           type: string
+ *                           format: date-time
+ *                         endpoint:
+ *                           type: string
+ *                           example: "/api/getter/endpoint"
  *                 - type: object
  *                   properties:
  *                     error:
@@ -508,6 +684,101 @@ router.get("/transfer/:requestId/status", async (req, res) => {
         timestamp: new Date().toISOString(),
         endpoint: "/api/transfer/:requestId/status",
         note: "This may fail if you're not the sender of the request",
+      },
+    });
+  }
+});
+
+/**
+ * @swagger
+ * /api/getter/plot-and-token-id-info:
+ *   get:
+ *     summary: Get Plot and Token ID Info
+ *     description: Retrieves the plot ID and token ID from the contract.
+ *     tags: [Token]
+ *     responses:
+ *       200:
+ *         description: Plot and token ID info retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     plotId:
+ *                       type: string
+ *                       example: "1"
+ *                     tokenId:
+ *                       type: string
+ *                       example: "1001"
+ *                 message:
+ *                   type: string
+ *                   example: "Plot and token ID info retrieved successfully"
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Operation failed"
+ *                     details:
+ *                       type: string
+ *                       example: "Detailed error description"
+ *                     code:
+ *                       type: string
+ *                       example: "CALL_EXCEPTION"
+ *                     timestamp:
+ *                       type: string
+ *                       format: date-time
+ *                     endpoint:
+ *                       type: string
+ *                       example: "/api/getter/plot-and-token-id-info"
+ */
+router.get("/plot-and-token-id-info", async (req, res) => {
+  try {
+    let contract;
+    try {
+      contract = getContract();
+    } catch (error) {
+      await initializeContract();
+      contract = getContract();
+    }
+    const [plotId, tokenId] = await contract.getPlotAndTokenIdInfo();
+    res.json({
+      success: true,
+      data: {
+        plotId: plotId.toString(),
+        tokenId: tokenId.toString(),
+      },
+      message: "Plot and token ID info retrieved successfully",
+    });
+  } catch (error) {
+    console.error(
+      "Error in /api/getter/plot-and-token-id-info:",
+      error.message
+    );
+    res.status(500).json({
+      success: false,
+      error: {
+        message: "Failed to fetch plot and token ID info",
+        details: error.message,
+        code: error.code,
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/getter/plot-and-token-id-info",
       },
     });
   }
