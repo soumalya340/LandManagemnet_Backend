@@ -155,6 +155,11 @@ router.get("/get-treasury", async (req, res) => {
  *                     totalSupply:
  *                       type: string
  *                       example: "1000"
+ *                     plotAllocation:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example: ["100", "200", "300"]
  *                 message:
  *                   type: string
  *                   example: "Land information retrieved successfully"
@@ -197,7 +202,7 @@ router.get("/land/:tokenId", async (req, res) => {
       contract = getContract();
     }
     const { tokenId } = req.params;
-    const landData = await contract.landInfo(tokenId);
+    const landData = await contract.getLandInfo(tokenId);
     res.json({
       success: true,
       data: {
@@ -206,6 +211,9 @@ router.get("/land/:tokenId", async (req, res) => {
         parcelInfo: landData.parcelInfo,
         blockParcelTokenURI: landData.blockParcelTokenURI,
         totalSupply: landData.totalSupply.toString(),
+        plotAllocation: landData.plotAllocation.map((allocation) =>
+          allocation.toString()
+        ),
       },
       message: "Land information retrieved successfully",
     });
