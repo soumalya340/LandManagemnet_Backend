@@ -1301,8 +1301,9 @@ router.post("/approve-transfer", async (req, res) => {
       });
     }
 
+    const signerWalletLower = signerWallet.toLowerCase();
     const tx = await contract.delegateApproveTransfer(
-      signerWallet,
+      signerWalletLower,
       requestId,
       role
     );
